@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Bedrock Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🤖 AWS Bedrock Chat</h1>
+            <button id="settingsBtn" class="settings-btn" title="Settings">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6m5.66-15.66l-4.24 4.24m-2.83 2.83l-4.24 4.24M23 12h-6m-6 0H1m15.66 5.66l-4.24-4.24m-2.83-2.83l-4.24-4.24"></path>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div id="chatMessages" class="chat-messages"></div>
+            
+            <!-- Loading indicator -->
+            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <textarea 
+                id="messageInput" 
+                placeholder="Type your message here..." 
+                rows="16"
+            ></textarea>
+            <button id="sendBtn" class="send-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+                Send
+            </button>
+        </div>
+    </div>
+
+    <!-- Full Message Modal -->
+    <div id="fullMessageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Full Message</h2>
+                <button class="close-btn" id="closeFullMessage">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="full-message-text" id="fullMessageText"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" id="closeSettings">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="regionInput">AWS Region</label>
+                    <input type="text" id="regionInput" placeholder="us-east-1">
+                </div>
+
+                <div class="setting-group">
+                    <label for="modelSelect">Model</label>
+                    <select id="modelSelect">
+                        <option value="anthropic.claude-opus-4-5-20251101-v1:0">Claude Opus 4.5</option>
+                        <option value="anthropic.claude-sonnet-4-5-20250929-v1:0">Claude Sonnet 4.5</option>
+                        <option value="anthropic.claude-opus-4-1-20250805-v1:0">Claude Opus 4.1</option>
+                        <option value="anthropic.claude-opus-4-20250514-v1:0">Claude Opus 4</option>
+                        <option value="anthropic.claude-sonnet-4-20250514-v1:0">Claude Sonnet 4</option>
+                        <option value="us.anthropic.claude-3-7-sonnet-20250219-v1:0">Claude 3.7 Sonnet</option>
+                        <option value="anthropic.claude-3-5-sonnet-20241022-v2:0">Claude 3.5 Sonnet v2</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label for="systemPromptInput">System Prompt</label>
+                    <textarea id="systemPromptInput" rows="4" placeholder="You are a helpful AI assistant."></textarea>
+                    <small>Instructions that guide the model's behavior</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="temperatureInput">
+                        Temperature: <span id="temperatureValue">1.0</span>
+                    </label>
+                    <input type="range" id="temperatureInput" min="0" max="1" step="0.1" value="1.0">
+                    <small>Higher values make output more random</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="maxTokensInput">
+                        Max Tokens: <span id="maxTokensValue">4096</span>
+                    </label>
+                    <input type="range" id="maxTokensInput" min="256" max="8192" step="256" value="4096">
+                    <small>Maximum length of the response</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="topPInput">
+                        Top P: <span id="topPValue">0.999</span>
+                    </label>
+                    <input type="range" id="topPInput" min="0" max="1" step="0.001" value="0.999">
+                    <small>Nucleus sampling threshold</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="topKInput">
+                        Top K: <span id="topKValue">250</span>
+                    </label>
+                    <input type="range" id="topKInput" min="0" max="500" step="1" value="250">
+                    <small>Limits vocabulary to top K tokens</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettings" class="primary-btn">Save Settings</button>
+                <button id="resetSettings" class="secondary-btn">Reset to Defaults</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

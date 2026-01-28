@@ -1,0 +1,20 @@
+services:
+  bedrock-chat:
+    build: .
+    container_name: bedrock-chat
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount credentials file (create this file before running)
+      - ./.credentials:/app/.credentials:ro
+      # Mount settings to persist user preferences
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
